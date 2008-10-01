@@ -100,6 +100,14 @@ jZJTylbJQ1b5PBBjGiP0PpK48cdF
       status == "Completed"
     end
 
+    def failed?
+      status == "Failed"
+    end
+    
+    def denied?
+      status == "Denied"
+    end
+
     # When was this payment received by the client. 
     # sometimes it can happen that we get the notification much later. 
     # One possible scenario is that our web application was down. In this case paypal tries several 
