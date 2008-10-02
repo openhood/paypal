@@ -80,8 +80,7 @@ module Paypal
       raise ArgumentError, "Unknown option #{misses.inspect}" if not misses.empty?
 
       params = {
-        :cmd => "_ext-enter",
-        :redirect_cmd => "_xclick",
+        :cmd => "_xclick",
         :quantity => 1,
         :business => business,
         :item_number => item_number,
