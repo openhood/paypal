@@ -163,7 +163,7 @@ jZJTylbJQ1b5PBBjGiP0PpK48cdF
     end
 
     # This is the custom field which you passed to paypal 
-    def invoice
+    def custom
       params['custom']
     end
     
