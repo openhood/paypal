@@ -271,7 +271,9 @@ module Paypal
       # Encryption Options - used internally only.
       :business_key, # Your private key
       :business_cert, # Your public certificate
-      :business_certid # Your public certificate ID (from Paypal)
+      :business_certid, # Your public certificate ID (from Paypal)
+      # Other
+      :bn
       ]
     end
     
