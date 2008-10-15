@@ -15,6 +15,12 @@ business account and tell paypal where to send the IPN ( Instant payment notific
 * Valid paypal business account. 
 * (optional) The money library from http://dist.leetsoft.com/api/money 
 
+== Patch for 2.0.0 Gem
+
+If you already have installed paypal-2.0.0, and don't want to install this version,
+apply the patch for your current installation available in ./patch-2.0.0. Follow
+instructions in ./patch-2.0.0/paypal-2.0.0.patch.readme.
+
 == Installation 
 
 1) Install the plugin using ./script/plugin install svn://vault.jadedpixel.com/paypal/trunk/paypal
