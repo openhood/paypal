@@ -100,6 +100,14 @@ and note the "Cert ID" that Paypal shows for the certificate.
 uninitalized constant Paypal - Make sure your ruby has openssl support
 
 == Changelog
+2008-10-15 -- 2.0.1
+    CHG: Modified README.
+    FIX: Moved patch to own directory, was being caught by git-hub as gem's README
+    NEW: Added patch for currently installed paypal-2.0.0 gem to apply directly on gems directory.
+    NEW: Added relevant test statements.
+    FIX: removed duplicate 'invoice' method in lib/notification.rb
+    NEW: added correct 'custom' method to lib/notification.rb
+    NEW: added pending_reason, reason_code, memo, payment_type, exchange_rate methods to lib/notification.rb
 
 2006-04-20 -- 2.0.0 
 * Uses paypal extended syntax. The plugin can now submit shipping and billing addresses using the paypal_address helper.
