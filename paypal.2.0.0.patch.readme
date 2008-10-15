@@ -1,0 +1,16 @@
+This is a patch for Paypal 2.0.0 gem to correct a problem with
+'invoice' and 'custom' methods.
+
+Also adds pending_reason, reason_code, memo, payment_type and exchange_rate methods.
+
+Apply at your own gems library directory. For me it is
+/usr/local/lib/ruby/gems/1.8/gems/paypal-2.0.0/
+
+Do something like
+
+patch -p1 < paypal.2.0.0.patch
+
+
+Gabriel Medina.
+
+
