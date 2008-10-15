@@ -155,8 +155,33 @@ jZJTylbJQ1b5PBBjGiP0PpK48cdF
     end
 
     # This is the custom field which you passed to paypal 
-    def invoice
+    def custom
       params['custom']
+    end
+    
+    # Reason for pending status, nil if status is not pending. 
+    def pending_reason
+      params['pending_reason']
+    end
+    
+    # Reason for reversed status, nil if status is not reversed. 
+    def reason_code
+      params['reason_code']
+    end
+    
+    # Memo entered by customer if any
+    def memo
+      params['memo']
+    end
+      
+    # Well, the payment type.
+    def payment_type
+      params['payment_type']
+    end
+    
+    # The exchange rate used if there was a conversion.
+    def exchange_rate
+      params['exchange_rate']
     end
     
     def gross_cents
