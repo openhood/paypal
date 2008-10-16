@@ -15,12 +15,6 @@ business account and tell paypal where to send the IPN ( Instant payment notific
 * Valid paypal business account. 
 * (optional) The money library from http://dist.leetsoft.com/api/money 
 
-== Patch for 2.0.0 Gem
-
-If you already have installed paypal-2.0.0, and don't want to install this version,
-apply the patch for your current installation available in ./patch-2.0.0. Follow
-instructions in ./patch-2.0.0/paypal-2.0.0.patch.readme.
-
 == Installation 
 
 1) Install the plugin using ./script/plugin install svn://vault.jadedpixel.com/paypal/trunk/paypal
@@ -65,7 +59,17 @@ sandbox account to use while the application is running in development mode.
      Please press here to pay $500US using paypal. <br/>
      <%= submit_tag "Go to paypal >>" %>
 
-   <% end_form_tag %> 
+   </form>
+   
+   or, with the same results, the block version:
+
+   <% paypal_form_tag do %>
+     <%= paypal_setup "Item 500", Money.us_dollar(50000), "bob@bigbusiness.com", :notify_url => url_for(:only_path => false, :action => 'paypal_ipn') %>  
+
+     Please press here to pay $500US using paypal. <br/>
+     <%= submit_tag "Go to paypal >>" %>
+
+   <% end %>
 
 == Using encrypted form data
 
@@ -74,7 +78,7 @@ You must have a verified paypal account to use this functionality.
 
 1) Create a private key for yourself
 
-    openssl genrsa -out business_key.prm 1024
+    openssl genrsa -out business_key.pem 1024
 
 2) Create a public certificate to share with Paypal
 

@@ -22,6 +22,16 @@ class TestController < ActionController::Base
   def url_for(options, *parameters_for_method_reference)
     "http://www.sandbox.paypal.com/cgi-bin/webscr"
   end
+  
+  # Used for testing paypal_form_start using a block (test_paypal_form_start_with_block)
+  def capture(&block)
+    return yield
+  end
+  
+  # Used for testing paypal_form_start using a block (test_paypal_form_start_with_block)
+  def concat(one, two)
+    return eval("self", two)+one
+  end
 end
 
 class HelperTest < Test::Unit::TestCase
@@ -48,6 +58,14 @@ class HelperTest < Test::Unit::TestCase
 
   def test_paypal_form_start
     assert_equal %{<form action="http://www.sandbox.paypal.com/cgi-bin/webscr" method="post">}, @helpers.paypal_form_tag
+  end
+
+  def test_paypal_form_start_with_block
+    strTest = "OriginalString"
+    assert_equal %Q(OriginalString<form action="http://www.sandbox.paypal.com/cgi-bin/webscr" method="post">SomeTextHere</form>), 
+    strTest.instance_eval(%Q(TestController.new.paypal_form_tag do
+      "SomeTextHere"
+    end))
   end
 
   def test_paypal_setup_with_money
@@ -154,6 +172,5 @@ class HelperTest < Test::Unit::TestCase
     "quantity" => "1",
     "return" => "http://www.bigbusiness.com"}, actual )
   end    
-
 
 end
