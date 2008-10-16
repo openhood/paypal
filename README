@@ -104,6 +104,13 @@ and note the "Cert ID" that Paypal shows for the certificate.
 uninitalized constant Paypal - Make sure your ruby has openssl support
 
 == Changelog
+
+2008-10-16 -- 2.0.2
+    NEW: Added block style support for paypal_form_tag (paypal_form_tag do blah.. blah... end)
+    DEL: Removed patch for 2.0.0, no longer seems suitable.
+    NEW: Added testing for the paypal_form_tag block style.
+    NEW: Added a sample (actual from paypal sandbox) PayPal server response for IPN, to aid in testing.
+
 2008-10-15 -- 2.0.1
     CHG: Modified README.
     FIX: Moved patch to own directory, was being caught by git-hub as gem's README
