@@ -3,12 +3,16 @@ $:.unshift(File.dirname(__FILE__) + '/../lib')
 require 'test/unit'
 require 'paypal'
 
-require_gem 'money'
-require_gem 'actionpack' rescue LoadError raise(StandardErrror.new("This test needs ActionPack installed as gem to run"))
+require 'rubygems'
+require 'actionpack' rescue LoadError raise(StandardErrror.new("This test needs ActionPack installed as gem to run"))
+require 'action_controller'
+require 'action_view'
+require 'money'
 
 
 # Little hack class which pretends to be a active controller
-class TestController
+class TestController < ActionController::Base
+  allow_forgery_protection
   include Paypal::Helpers
   include ActionView::Helpers::TagHelper
   include ActionView::Helpers::FormHelper
@@ -51,13 +55,12 @@ class HelperTest < Test::Unit::TestCase
     assert_inputs({ "amount" => "500.00",
                     "business" => "bob@bigbusiness.com",
                     "charset" => "utf-8",
-                    "cmd" => "_ext-enter",
+                    "cmd" => "_xclick",
                     "currency_code" => "USD",
                     "item_name" => "Store purchase",
                     "item_number" => "100",
                     "no_note" => "1",
                     "no_shipping" => "1",
-                    "redirect_cmd" => "_xclick",
                     "quantity" => "1"}, actual)
   end
 
@@ -66,14 +69,13 @@ class HelperTest < Test::Unit::TestCase
     assert_inputs({ "amount" => "500.00",
     "business" => "bob@bigbusiness.com",
     "charset" => "utf-8",
-    "cmd" => "_ext-enter",
+    "cmd" => "_xclick",
     "currency_code" => "USD",
     "item_name" => "Store purchase",
     "item_number" => "100",
     "no_note" => "1",
     "no_shipping" => "1",
     "quantity" => "1",
-    "redirect_cmd" => "_xclick",
     "tax" => "5.00"}, actual)
   end
   
@@ -82,14 +84,13 @@ class HelperTest < Test::Unit::TestCase
     assert_inputs({ "amount" => "500.00",
     "business" => "bob@bigbusiness.com",
     "charset" => "utf-8",
-    "cmd" => "_ext-enter",
+    "cmd" => "_xclick",
     "currency_code" => "USD",
     "invoice" => "Cool invoice!",
     "item_name" => "Store purchase",
     "item_number" => "100",
     "no_note" => "1",
     "no_shipping" => "1",
-    "redirect_cmd" => "_xclick",
     "quantity" => "1"}, actual)
   end  
 
@@ -98,7 +99,7 @@ class HelperTest < Test::Unit::TestCase
     assert_inputs({ "amount" => "500.00",
     "business" => "bob@bigbusiness.com",
     "charset" => "utf-8",
-    "cmd" => "_ext-enter",
+    "cmd" => "_xclick",
     "currency_code" => "USD",
     "custom" => "Custom",
     "item_name" => "Store purchase",
@@ -106,7 +107,6 @@ class HelperTest < Test::Unit::TestCase
     "no_note" => "1",
     "no_shipping" => "1",
     "quantity" => "1", 
-    "redirect_cmd" => "_xclick",
     }, actual)
   end  
   
@@ -115,13 +115,12 @@ class HelperTest < Test::Unit::TestCase
       assert_inputs({ "amount" => "50.00",
       "business" => "bob@bigbusiness.com",
       "charset" => "utf-8",
-      "cmd" => "_ext-enter",
+      "cmd" => "_xclick",
       "currency_code" => "CAD",
       "item_name" => "Store purchase",
       "item_number" => "100",
       "no_note" => "1",
       "no_shipping" => "1",
-      "redirect_cmd" => "_xclick",
       "quantity" => "1"}, actual)
     end
 
@@ -130,13 +129,12 @@ class HelperTest < Test::Unit::TestCase
       assert_inputs({ "amount" => "50.00",
       "business" => "bob@bigbusiness.com",
       "charset" => "utf-8",
-      "cmd" => "_ext-enter",
+      "cmd" => "_xclick",
       "currency_code" => "CAD",
       "item_name" => "Store purchase",
       "item_number" => "100",
       "no_note" => "1",
       "no_shipping" => "1",
-      "redirect_cmd" => "_xclick",
       "quantity" => "1"}, actual)
     end
     
@@ -146,7 +144,7 @@ class HelperTest < Test::Unit::TestCase
     "business" => "bob@bigbusiness.com",
     "cancel_return" => "http://www.bigbusiness.com",
     "charset" => "utf-8",
-    "cmd" => "_ext-enter",
+    "cmd" => "_xclick",
     "currency_code" => "USD",
     "item_name" => "MegaBob's shop purchase",
     "item_number" => "100",
@@ -154,7 +152,6 @@ class HelperTest < Test::Unit::TestCase
     "no_shipping" => "0",
     "notify_url" => "http://www.bigbusiness.com",
     "quantity" => "1",
-    "redirect_cmd" => "_xclick",
     "return" => "http://www.bigbusiness.com"}, actual )
   end    
 
