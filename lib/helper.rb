@@ -80,8 +80,7 @@ module Paypal
       raise ArgumentError, "Unknown option #{misses.inspect}" if not misses.empty?
 
       params = {
-        :cmd => "_ext-enter",
-        :redirect_cmd => "_xclick",
+        :cmd => "_xclick",
         :quantity => 1,
         :business => business,
         :item_number => item_number,
@@ -272,7 +271,9 @@ module Paypal
       # Encryption Options - used internally only.
       :business_key, # Your private key
       :business_cert, # Your public certificate
-      :business_certid # Your public certificate ID (from Paypal)
+      :business_certid, # Your public certificate ID (from Paypal)
+      # Other
+      :bn
       ]
     end
     
