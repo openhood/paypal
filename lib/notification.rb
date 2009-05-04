@@ -18,7 +18,7 @@ module Paypal
   #       if notify.acknowledge 
   #         begin
   #           
-  #           if notify.complete? and order.total == notify.amount
+  #           if notify.complete? and order.total == notify.amount and notify.business == 'sales@myshop.com'
   #             order.status = 'success' 
   #             
   #             shop.ship(order)
@@ -150,6 +150,12 @@ jZJTylbJQ1b5PBBjGiP0PpK48cdF
     # This is the item number which we submitted to paypal 
     def item_id
       params['item_number']
+    end
+
+    # This is the email address associated to the paypal account that recieved
+    # the payment.
+    def business
+      params['business']
     end
 
     # This is the item_name which you passed to paypal
