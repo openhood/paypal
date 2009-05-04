@@ -43,7 +43,7 @@ module Paypal
     #
     # The last parameter is a options hash. You can set or override any Paypal-recognized parameter, including:
     #
-    # * <tt>:cmd</tt> -- default is '_xclick'.
+    # * <tt>:cmd</tt> -- default is '_xclick' or '_xclick-subscriptions' when you use :subscription.
     # * <tt>:quantity</tt> -- default is '1'.
     # * <tt>:no_note</tt> -- default is '1'.
     # * <tt>:item_name</tt> -- default is 'Store purchase'. This is the name of the purchase which will be displayed
@@ -62,6 +62,14 @@ module Paypal
     # * <tt>:tax</tt> -- the tax for the store purchase. Same format as the amount parameter but optional
     # * <tt>:invoice</tt> -- Unique invoice number. User will never see this. optional
     # * <tt>:custom</tt> -- Custom field. User will never see this. optional
+    #
+    # Dealing with subscriptions
+    #
+    # * <tt>:subscription</tt> -- Hash containing the subscription options. optional
+    #   * <tt>:period</tt> -- One of :monthly, :yearly, :weekly or :daily
+    #   * <tt>:length</tt> -- How often, based on :period. E.g. 6 :monthly?
+    #   * <tt>:retry</tt> -- Default is false. Boolean for if paypal should retry failed payments.
+    #   * <tt>:recurring</tt> -- Default is false. Boolean for if paypal should recur payment and end of period.
     #
     # Generating encrypted form data
     #
@@ -83,12 +91,14 @@ module Paypal
     #   <%= paypal_setup @order.id, Money.ca_dollar(50000), "bob@bigbusiness.com", :item_name => 'Snowdevil shop purchase', :return_url => paypal_return_url, :cancel_url => paypal_cancel_url, :business_key => @business_key, :business_cert => @business_cert, :business_certid => @business_certid  %>  
     # 
     def paypal_setup(item_number, amount, business, options = {})
-      
+
+      subscription = options.delete(:subscription)
+
       misses = (options.keys - valid_setup_options)
       raise ArgumentError, "Unknown option #{misses.inspect}" if not misses.empty?
 
       params = {
-        :cmd => "_xclick",
+        :redirect_cmd => subscription ? '_xclick-subscriptions' : '_xclick',
         :quantity => 1,
         :business => business,
         :item_number => item_number,
@@ -97,18 +107,33 @@ module Paypal
         :no_note => '1',
         :charset => 'utf-8'
       }.merge(options)
-            
+
       params[:currency_code] = amount.currency if amount.respond_to?(:currency)
       params[:currency_code] = params.delete(:currency) if params[:currency]
       params[:currency_code] ||= 'USD'
 
       # We accept both strings and money objects as amount    
       amount = amount.cents.to_f / 100.0 if amount.respond_to?(:cents)
-      params[:amount] = sprintf("%.2f", amount)
-      
+      amount = sprintf('%.2f', amount)
+
+      if subscription.nil?
+        params[:amount] = amount
+      else
+        params[:a3]  = amount
+        params[:p3]  = subscription[:length]
+        params[:sra] = subscription[:retry] == true ? 1 : 0
+        params[:src] = subscription[:recurring] == true ? 1 : 0
+        params[:t3]  = case subscription[:period]
+          when :monthly; 'M'
+          when :yearly;  'Y'
+          when :weekly;  'W'
+          when :daily;   'D'
+        end
+      end
+
       # same for tax
       tax = params[:tax]
-      if tax
+      unless tax.nil?
         tax = tax.cents.to_f / 100.0 if tax.respond_to?(:cents)
         params[:tax] = sprintf("%.2f", tax)
       end
@@ -147,7 +172,7 @@ module Paypal
           # Just emit all the parameters that we have as hidden fields.
           # Note that the sorting isn't really needed, but it makes testing a lot easier for now.
           params.each do |key, value|
-            button << tag(:input, :type => 'hidden', :name => key, :value => value)
+            button << tag(:input, :type => 'hidden', :name => key, :value => value) unless value.nil?
           end
         end
       end.join("\n")
