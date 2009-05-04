@@ -152,6 +152,11 @@ jZJTylbJQ1b5PBBjGiP0PpK48cdF
       params['item_number']
     end
 
+    # This is the item_name which you passed to paypal
+    def item_name
+      params['item_name']
+    end
+
     # This is the invocie which you passed to paypal 
     def invoice
       params['invoice']
