@@ -128,33 +128,33 @@ class HelperTest < Test::Unit::TestCase
     }, actual)
   end  
   
-    def test_paypal_setup_with_float
-      actual = @helpers.paypal_setup("100", 50.00, "bob@bigbusiness.com", :currency => 'CAD')
-      assert_inputs({ "amount" => "50.00",
-      "business" => "bob@bigbusiness.com",
-      "charset" => "utf-8",
-      "cmd" => "_xclick",
-      "currency_code" => "CAD",
-      "item_name" => "Store purchase",
-      "item_number" => "100",
-      "no_note" => "1",
-      "no_shipping" => "1",
-      "quantity" => "1"}, actual)
-    end
+  def test_paypal_setup_with_float
+    actual = @helpers.paypal_setup("100", 50.00, "bob@bigbusiness.com", :currency => 'CAD')
+    assert_inputs({ "amount" => "50.00",
+    "business" => "bob@bigbusiness.com",
+    "charset" => "utf-8",
+    "cmd" => "_xclick",
+    "currency_code" => "CAD",
+    "item_name" => "Store purchase",
+    "item_number" => "100",
+    "no_note" => "1",
+    "no_shipping" => "1",
+    "quantity" => "1"}, actual)
+  end
 
-    def test_paypal_setup_with_string
-      actual = @helpers.paypal_setup("100", "50.00", "bob@bigbusiness.com", :currency => 'CAD')
-      assert_inputs({ "amount" => "50.00",
-      "business" => "bob@bigbusiness.com",
-      "charset" => "utf-8",
-      "cmd" => "_xclick",
-      "currency_code" => "CAD",
-      "item_name" => "Store purchase",
-      "item_number" => "100",
-      "no_note" => "1",
-      "no_shipping" => "1",
-      "quantity" => "1"}, actual)
-    end
+  def test_paypal_setup_with_string
+    actual = @helpers.paypal_setup("100", "50.00", "bob@bigbusiness.com", :currency => 'CAD')
+    assert_inputs({ "amount" => "50.00",
+    "business" => "bob@bigbusiness.com",
+    "charset" => "utf-8",
+    "cmd" => "_xclick",
+    "currency_code" => "CAD",
+    "item_name" => "Store purchase",
+    "item_number" => "100",
+    "no_note" => "1",
+    "no_shipping" => "1",
+    "quantity" => "1"}, actual)
+  end
     
   def test_paypal_setup_options
     actual = @helpers.paypal_setup("100", Money.us_dollar(100), "bob@bigbusiness.com", :item_name => "MegaBob's shop purchase", :return => 'http://www.bigbusiness.com', :cancel_return => 'http://www.bigbusiness.com', :notify_url => 'http://www.bigbusiness.com', :no_shipping => 0, :no_note => 0  )    
@@ -172,5 +172,25 @@ class HelperTest < Test::Unit::TestCase
     "quantity" => "1",
     "return" => "http://www.bigbusiness.com"}, actual )
   end    
+
+  def test_paypal_setup_subscription
+    actual = @helpers.paypal_setup("100", Money.us_dollar(2800), "bob@bigbusiness.com", :item_name => "MegaBob's shop purchase", :return => 'http://www.bigbusiness.com', :cancel_return => 'http://www.bigbusiness.com', :notify_url => 'http://www.bigbusiness.com', :no_shipping => 0, :no_note => 0, :subscription => { :recurring => true, :period => :monthly, :retry => true })
+    assert_inputs({ "a3" => "28.00",
+    "business" => "bob@bigbusiness.com",
+    "cancel_return" => "http://www.bigbusiness.com",
+    "charset" => "utf-8",
+    "cmd" => "_xclick-subscription",
+    "currency_code" => "USD",
+    "item_name" => "MegaBob's shop purchase",
+    "item_number" => "100",
+    "no_note" => "0",
+    "no_shipping" => "0",
+    "notify_url" => "http://www.bigbusiness.com",
+    "quantity" => "1",
+    "src" => "1",
+    "sra" => "1",
+    "t3" => "M",
+    "return" => "http://www.bigbusiness.com"}, actual )
+  end
 
 end

@@ -98,7 +98,7 @@ module Paypal
       raise ArgumentError, "Unknown option #{misses.inspect}" if not misses.empty?
 
       params = {
-        :redirect_cmd => subscription ? '_xclick-subscriptions' : '_xclick',
+        :cmd => subscription ? '_xclick-subscription' : '_xclick',
         :quantity => 1,
         :business => business,
         :item_number => item_number,
