@@ -99,7 +99,7 @@ module Paypal
 
       params = {
         :cmd => subscription ? '_ext-enter' : '_xclick',
-        :redirect_cmd = subscription ? '_xclick-subscription' : nil,
+        :redirect_cmd => subscription ? '_xclick-subscriptions' : nil,
         :quantity => 1,
         :business => business,
         :item_number => item_number,
@@ -107,7 +107,7 @@ module Paypal
         :no_shipping => '1',
         :no_note => '1',
         :charset => 'utf-8'
-      }.flatten.merge(options)
+      }.reject{|k,v| v.nil?}.merge(options)
 
       params[:currency_code] = amount.currency if amount.respond_to?(:currency)
       params[:currency_code] = params.delete(:currency) if params[:currency]
