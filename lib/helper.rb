@@ -98,7 +98,8 @@ module Paypal
       raise ArgumentError, "Unknown option #{misses.inspect}" if not misses.empty?
 
       params = {
-        :cmd => subscription ? '_xclick-subscription' : '_xclick',
+        :cmd => subscription ? '_ext-enter' : '_xclick',
+        :redirect_cmd = subscription ? '_xclick-subscription' : nil,
         :quantity => 1,
         :business => business,
         :item_number => item_number,
@@ -106,7 +107,7 @@ module Paypal
         :no_shipping => '1',
         :no_note => '1',
         :charset => 'utf-8'
-      }.merge(options)
+      }.flatten.merge(options)
 
       params[:currency_code] = amount.currency if amount.respond_to?(:currency)
       params[:currency_code] = params.delete(:currency) if params[:currency]

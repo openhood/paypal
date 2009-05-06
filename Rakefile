@@ -5,7 +5,7 @@ require 'rake/rdoctask'
 require 'rake/gempackagetask'
 require 'rake/contrib/rubyforgepublisher'
 
-PKG_VERSION = "2.1.2"
+PKG_VERSION = "2.1.3"
 PKG_NAME = "paypal"
 PKG_FILE_NAME = "#{PKG_NAME}-#{PKG_VERSION}"
 
