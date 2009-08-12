@@ -47,7 +47,7 @@ module Paypal
     # this https address does not in fact work. 
     # 
     # Example: 
-    #   Paypal::Notification.ipn_url = http://www.paypal.com/cgi-bin/webscr
+    #   Paypal::Notification.ipn_url = https://www.paypal.com/cgi-bin/webscr
     #
     cattr_accessor :ipn_url
     @@ipn_url = 'https://www.sandbox.paypal.com/cgi-bin/webscr'

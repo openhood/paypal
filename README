@@ -99,6 +99,10 @@ and note the "Cert ID" that Paypal shows for the certificate.
 
     Paypal::Notification.paypal_cert = File::read("paypal_cert.pem")
 
+7) Finally, add the following line to your environment.rb or inside an initializer:
+
+    Paypal::Notification.ipn_url = "https://www.paypal.com/cgi-bin/webscr"
+
 == Troubleshooting
 
 uninitalized constant Paypal - Make sure your ruby has openssl support
